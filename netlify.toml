@@ -1,0 +1,6 @@
+[build]
+  command = "pnpm build"
+  publish = "build"
+
+[context.production.environment]
+  NODE_VERSION = "16"  # Specify the Node.js version compatible with pnpm >=9
