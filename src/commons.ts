@@ -1,9 +1,3 @@
-import { Splide } from '@splidejs/splide';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import SplitType from 'split-type';
-import { Swiper } from 'swiper';
-
 gsap.registerPlugin(ScrollTrigger);
 window.addEventListener('DOMContentLoaded', (event) => {
   // Split text into spans
@@ -40,14 +34,26 @@ window.addEventListener('DOMContentLoaded', (event) => {
     });
     tl.from($(this).find('.word'), {
       opacity: 0.2,
+      fontWeight: 400, // Start with normal font weight
       duration: 0.4,
       ease: 'power1.out',
       stagger: { each: 0.4 },
     });
+    tl.to(
+      $(this).find('.word'),
+      {
+        opacity: 1,
+        fontWeight: 500, // Increase font weight to 500
+        duration: 0.4,
+        ease: 'power1.out',
+        stagger: { each: 0.4 },
+      },
+      '<'
+    ); // The "<" makes this animation start at the same time as the previous one
   });
 
   // Avoid flash of unstyled content
-  gsap.set('[text-split]', { opacity: 1 });
+  gsap.set('[text-split]', { opacity: 1, fontWeight: 400 });
 });
 
 // Register ScrollTrigger plugin
@@ -220,18 +226,20 @@ initHeroSlider();
 // Re-check on window resize
 window.addEventListener('resize', initHeroSlider);
 
-let swiper2;
+let swiper2, swiper3;
 
 function initSwiper() {
   if (window.innerWidth > 480) {
     if (!swiper2) {
       swiper2 = new Swiper('.swiper2', {
-        slidesPerView: 2,
+        slidesPerView: 3,
         slidesPerGroup: 1,
         grabCursor: true,
         a11y: false,
         spaceBetween: 8,
         allowTouchMove: true,
+        centeredSlides: true,
+        centeredSlidesBounds: true,
         navigation: {
           nextEl: "[data-swiper-button='next']",
           prevEl: "[data-swiper-button='prev']",
@@ -248,7 +256,7 @@ function initSwiper() {
             spaceBetween: 8,
           },
           992: {
-            slidesPerView: 2.5,
+            slidesPerView: 3.5,
             slidesPerGroup: 1,
             spaceBetween: 8,
           },
@@ -259,36 +267,103 @@ function initSwiper() {
     swiper2.destroy(true, true);
     swiper2 = null;
   }
+  if (!swiper3) {
+    swiper3 = new Swiper('.swiper3', {
+      slidesPerView: 1.1,
+      slidesPerGroup: 1,
+      grabCursor: true,
+      a11y: false,
+      spaceBetween: 8,
+      allowTouchMove: true,
+      navigation: {
+        nextEl: "[data-swiper-button='next']",
+        prevEl: "[data-swiper-button='prev']",
+      },
+      breakpoints: {
+        481: {
+          slidesPerView: 1,
+          slidesPerGroup: 1,
+          spaceBetween: 8,
+        },
+        767: {
+          slidesPerView: 2.5,
+          slidesPerGroup: 1,
+          spaceBetween: 8,
+        },
+        992: {
+          slidesPerView: 2.5,
+          slidesPerGroup: 1,
+          spaceBetween: 8,
+        },
+      },
+    });
+  }
 }
 
 initSwiper();
 window.addEventListener('resize', initSwiper);
 
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.section_opinion').forEach((element) => {
-    new Swiper(element.querySelector('.opinion'), {
-      direction: 'vertical',
-      slidesPerView: 1,
-      spaceBetween: 20,
-      autoHeight: true,
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.section_opinion').forEach(function (element) {
+    const swiper = new Swiper(element.querySelector('.swiper'), {
       speed: 500,
+      loop: false,
+      direction: 'horizontal',
+      autoHeight: true,
+      centeredSlides: false,
+      followFinger: false,
+      freeMode: false,
+      slideToClickedSlide: false,
+      slidesPerView: 1,
+      spaceBetween: '4%',
+      rewind: false,
+      mousewheel: {
+        forceToAxis: true,
+      },
+      keyboard: {
+        enabled: true,
+        onlyInViewport: true,
+      },
+      breakpoints: {
+        // mobile landscape
+        480: {
+          slidesPerView: 1,
+          spaceBetween: '4%',
+          direction: 'vertical',
+        },
+        // tablet
+        768: {
+          slidesPerView: 1,
+          spaceBetween: '4%',
+          direction: 'vertical',
+        },
+        // desktop
+        992: {
+          slidesPerView: 1,
+          spaceBetween: '2%',
+          direction: 'vertical',
+        },
+      },
+      pagination: {
+        el: element.querySelector('.swiper-bullet-wrapper'),
+        bulletActiveClass: 'is-active',
+        bulletClass: 'swiper-bullet',
+        bulletElement: 'button',
+        clickable: true,
+      },
       navigation: {
         nextEl: element.querySelector('.swiper-next'),
         prevEl: element.querySelector('.swiper-prev'),
         disabledClass: 'is-disabled',
       },
-      pagination: {
-        el: element.querySelector('.swiper-bullet-wrapper'),
-        clickable: true,
-        bulletClass: 'swiper-bullet',
-        bulletActiveClass: 'is-active',
+      scrollbar: {
+        el: element.querySelector('.swiper-drag-wrapper'),
+        draggable: true,
+        dragClass: 'swiper-drag',
+        snapOnRelease: true,
       },
       slideActiveClass: 'is-active',
-      keyboard: {
-        enabled: true,
-        onlyInViewport: true,
-      },
-      mousewheel: true,
+      slideDuplicateActiveClass: 'is-active',
     });
   });
 });
@@ -328,6 +403,89 @@ $(document).ready(function () {
   staggerAnimate('.section_explore');
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.section_opinion').forEach(function (element) {
+    const swiper = new Swiper(element.querySelector('.swiper'), {
+      speed: 500,
+      loop: false,
+      direction: 'horizontal',
+      autoHeight: true,
+      slidesPerView: 1,
+      spaceBetween: '4%',
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+      },
+      breakpoints: {
+        // mobile landscape
+        480: {
+          slidesPerView: 1,
+          spaceBetween: '4%',
+          direction: 'vertical',
+        },
+        // tablet
+        768: {
+          slidesPerView: 1,
+          spaceBetween: '4%',
+          direction: 'vertical',
+        },
+        // desktop
+        992: {
+          slidesPerView: 1,
+          spaceBetween: '2%',
+          direction: 'vertical',
+        },
+      },
+      pagination: {
+        el: element.querySelector('.opinion_pagination'),
+        bulletActiveClass: 'is-active',
+        bulletClass: 'swiper-bullet',
+        bulletElement: 'button',
+        clickable: true,
+      },
+      slideActiveClass: 'is-active',
+      slideDuplicateActiveClass: 'is-active',
+    });
+  });
+});
+
+function setupScrollToTop() {
+  const moveTopButton = document.querySelector('.is--move-top');
+
+  if (moveTopButton) {
+    moveTopButton.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      // Animate the button
+      gsap.to(moveTopButton, {
+        scale: 1.2,
+        duration: 0.2,
+        ease: 'power2.out',
+        onComplete: () => {
+          // Scroll to top smoothly
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+          });
+
+          // Return the button to its original size
+          gsap.to(moveTopButton, {
+            scale: 1,
+            duration: 0.2,
+            ease: 'power2.in',
+            delay: 0.3,
+          });
+        },
+      });
+    });
+  }
+}
+
+// Call the setup function when the DOM is loaded
+document.addEventListener('DOMContentLoaded', setupScrollToTop);
+
+// Call the setup function when the DOM is loaded
+document.addEventListener('DOMContentLoaded', setupScrollToTop);
 // Initialize Splide slider
 new Splide('.amenities', {
   type: 'loop',
