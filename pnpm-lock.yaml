@@ -17,6 +17,9 @@ importers:
       gsap:
         specifier: ^3.12.5
         version: 3.12.5
+      pnpm:
+        specifier: ^9.11.0
+        version: 9.11.0
       split-type:
         specifier: ^0.3.4
         version: 0.3.4
@@ -1267,6 +1270,11 @@ packages:
   playwright@1.42.1:
     resolution: {integrity: sha512-PgwB03s2DZBcNRoW+1w9E+VkLBxweib6KTXM0M3tkiT4jVxKSi6PmVJ591J+0u10LUrgxB7dLRbiJqO5s2QPMg==}
     engines: {node: '>=16'}
+    hasBin: true
+
+  pnpm@9.11.0:
+    resolution: {integrity: sha512-CiA/+u1aP2MkLNBkyPtYkjZsED4ygHkxj3gGLyTqjJ1QvGpHqjVnyr79gk0XDnj6J0XtHxaxMuFkNhRrdojxmw==}
+    engines: {node: '>=18.12'}
     hasBin: true
 
   possible-typed-array-names@1.0.0:
@@ -2988,6 +2996,8 @@ snapshots:
       playwright-core: 1.42.1
     optionalDependencies:
       fsevents: 2.3.2
+
+  pnpm@9.11.0: {}
 
   possible-typed-array-names@1.0.0: {}
 
